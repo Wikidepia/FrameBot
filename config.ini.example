@@ -1,0 +1,4 @@
+[framebot]
+prefix = "Some fiction action movie"
+interval = 5 # Minutes
+fb_token = 000000000000
