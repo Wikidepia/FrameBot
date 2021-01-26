@@ -1,4 +1,5 @@
 [framebot]
 prefix = "Some fiction action movie"
-interval = 5 # Minutes
+interval = 1
 fb_token = 000000000000
+fps = 1
