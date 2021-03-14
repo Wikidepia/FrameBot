@@ -61,7 +61,7 @@ def post(frame_dir, total_frames, episode):
     )
     graph = facebook.GraphAPI(fb_token)
     graph.put_photo(image=open(frame_dir, "rb"), message=message)
-    print(f"Posted frame {current_frame_num} of {str(total_frames)} successfully!")
+    print(f"Posted {message} successfully!")
     os.remove(frame_dir)
 
 
