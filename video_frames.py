@@ -35,7 +35,7 @@ def extract_frames(video_path, frames_dir, overwrite=False, start=-1, end=-1, ev
         end = len(vr)
 
     frames_list = list(range(start, end, every))
-    saved_count = 0
+    saved_count = 1
 
     if (
         every > 25 and len(frames_list) < 1000
