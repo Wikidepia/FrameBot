@@ -69,6 +69,8 @@ def init_frame():
     )
 
     for video in videos_dir:
+        if os.path.exists(f"./videos/{video}"):
+            continue
         video_frames.video_to_frames(
             video_path=f"./videos/{video}", frames_dir="frames", overwrite=False, every=fps
         )
