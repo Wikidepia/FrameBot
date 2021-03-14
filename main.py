@@ -18,7 +18,7 @@ def main():
         key=lambda f: f.lower(),
     )
 
-    for episode, frame_dir in enumerate(frame_dirs):
+    for frame_dir in frame_dirs:
         # First folder is always the current episode
         inframe_dir = sorted(
             [f for f in os.listdir(f"./frames/{frame_dir}") if not f.startswith(".")],
@@ -44,6 +44,9 @@ def main():
         break
 
     final_frame_dir = f"./frames/{frame_dir}/{inframe_dir[0]}"
+
+    # Get file name, replace "e" with empty string to get episode number
+    episode = frame_dir.split(".")[0].replace("e", "")
     return post(final_frame_dir, total_frames, episode)
 
 
@@ -64,12 +67,12 @@ def post(frame_dir, total_frames, episode):
 
 def init_frame():
     videos_dir = sorted(
-        [f for f in os.listdir("./videos") if not f.startswith(".")],
+        [f for f in os.listdir("./videos") if not f.startswith(".") and f.startswith("e")],
         key=lambda f: f.lower(),
     )
 
     for video in videos_dir:
-        if os.path.exists(f"./videos/{video}"):
+        if os.path.exists(f"./frames/{video}"):
             continue
         video_frames.video_to_frames(
             video_path=f"./videos/{video}", frames_dir="frames", overwrite=False, every=fps
