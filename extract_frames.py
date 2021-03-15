@@ -1,8 +1,7 @@
 import os
 
 import cv2
-import numpy as np
-from decord import VideoReader, cpu, gpu
+from decord import VideoReader, cpu
 from tqdm import tqdm
 
 

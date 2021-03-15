@@ -1,2 +1,6 @@
-schedule
+decord
 facebook-sdk
+numpy
+opencv-python-headless
+schedule
+tqdm
