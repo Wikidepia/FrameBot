@@ -6,7 +6,7 @@ from pathlib import Path
 import facebook
 import schedule
 
-import video_frames
+import extract_frames
 
 # Parse config.ini
 config = configparser.ConfigParser()
@@ -79,7 +79,7 @@ def init_frame():
     for video in videos_dir:
         if os.path.exists(f"./frames/{video}"):
             continue
-        video_frames.video_to_frames(
+        extract_frames.video_to_frames(
             video_path=f"./videos/{video}",
             frames_dir="frames",
             overwrite=False,

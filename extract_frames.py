@@ -3,6 +3,7 @@ import os
 import cv2
 import numpy as np
 from decord import VideoReader, cpu, gpu
+from tqdm import tqdm
 
 
 def extract_frames(video_path, frames_dir, overwrite=False, start=-1, end=-1, every=1):
@@ -20,7 +21,7 @@ def extract_frames(video_path, frames_dir, overwrite=False, start=-1, end=-1, ev
     video_path = os.path.normpath(video_path)  # make the paths OS (Windows) compatible
     frames_dir = os.path.normpath(frames_dir)  # make the paths OS (Windows) compatible
 
-    video_dir, video_filename = os.path.split(
+    _, video_filename = os.path.split(
         video_path
     )  # get the video path and filename from the path
 
@@ -41,9 +42,9 @@ def extract_frames(video_path, frames_dir, overwrite=False, start=-1, end=-1, ev
         every > 25 and len(frames_list) < 1000
     ):  # this is faster for every > 25 frames and can fit in memory
         frames = vr.get_batch(frames_list).asnumpy()
-        for index, frame in zip(
+        for index, frame in tqdm(zip(
             frames_list, frames
-        ):  # lets loop through the frames until the end
+        ), desc=f"Extracting frames from {video_filename}"):  # lets loop through the frames until the end
             save_path = os.path.join(
                 frames_dir, video_filename, "{:010d}.jpg".format(saved_count)
             )  # create the save path
@@ -56,7 +57,7 @@ def extract_frames(video_path, frames_dir, overwrite=False, start=-1, end=-1, ev
                 saved_count += 1  # increment our counter by one
 
     else:  # this is faster for every <25 and consumes small memory
-        for index in range(start, end):  # lets loop through the frames until the end
+        for index in tqdm(range(start, end), desc=f"Extracting frames from {video_filename}"):  # lets loop through the frames until the end
             frame = vr[index]  # read an image from the capture
 
             if (
@@ -89,14 +90,12 @@ def video_to_frames(video_path, frames_dir, overwrite=False, every=1):
     video_path = os.path.normpath(video_path)  # make the paths OS (Windows) compatible
     frames_dir = os.path.normpath(frames_dir)  # make the paths OS (Windows) compatible
 
-    video_dir, video_filename = os.path.split(
+    _, video_filename = os.path.split(
         video_path
     )  # get the video path and filename from the path
 
     # make directory to save frames, its a sub dir in the frames_dir with the video name
     os.makedirs(os.path.join(frames_dir, video_filename), exist_ok=True)
-
-    print("Extracting frames from {}".format(video_filename))
 
     extract_frames(video_path, frames_dir, every=every)  # let's now extract the frames
     return os.path.join(
