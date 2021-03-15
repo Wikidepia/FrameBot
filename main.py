@@ -1,16 +1,19 @@
 import configparser
 import os
 import time
+from pathlib import Path
 
 import facebook
 import schedule
+
 import video_frames
-from pathlib import Path
+
 # Parse config.ini
 config = configparser.ConfigParser()
 config.read("config.ini")
 fps = int(config["framebot"]["fps"])
 interval = int(config["framebot"]["interval"])
+
 
 def main():
     frame_dirs = sorted(
@@ -29,7 +32,7 @@ def main():
         if len(inframe_dir) == 0:
             os.remove("./tmp_data")
             continue
-        
+
         # New Episode
         # Save temporary data about amount of frame
         with open("./tmp_data", "a+") as f:
@@ -56,9 +59,7 @@ def post(frame_dir, total_frames, episode):
     frame_fname = Path(frame_dir).name
     current_frame_num = os.path.splitext(frame_fname)[0].strip("0")
 
-    message = (
-        f"{prefix} | Episode {episode} | Frame {current_frame_num} out of {str(total_frames)}"
-    )
+    message = f"{prefix} | Episode {episode} | Frame {current_frame_num} out of {str(total_frames)}"
     graph = facebook.GraphAPI(fb_token)
     graph.put_photo(image=open(frame_dir, "rb"), message=message)
     print(f"Posted {message} successfully!")
@@ -67,7 +68,11 @@ def post(frame_dir, total_frames, episode):
 
 def init_frame():
     videos_dir = sorted(
-        [f for f in os.listdir("./videos") if not f.startswith(".") and f.startswith("e")],
+        [
+            f
+            for f in os.listdir("./videos")
+            if not f.startswith(".") and f.startswith("e")
+        ],
         key=lambda f: f.lower(),
     )
 
@@ -75,7 +80,10 @@ def init_frame():
         if os.path.exists(f"./frames/{video}"):
             continue
         video_frames.video_to_frames(
-            video_path=f"./videos/{video}", frames_dir="frames", overwrite=False, every=fps
+            video_path=f"./videos/{video}",
+            frames_dir="frames",
+            overwrite=False,
+            every=fps,
         )
 
 

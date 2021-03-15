@@ -1,8 +1,8 @@
-import cv2
 import os
+
+import cv2
 import numpy as np
-from decord import VideoReader
-from decord import cpu, gpu
+from decord import VideoReader, cpu, gpu
 
 
 def extract_frames(video_path, frames_dir, overwrite=False, start=-1, end=-1, every=1):
