@@ -1,4 +1,5 @@
 import configparser
+import functools
 import os
 import time
 from pathlib import Path
@@ -13,6 +14,24 @@ config = configparser.ConfigParser()
 config.read("config.ini")
 fps = int(config["framebot"]["fps"])
 interval = int(config["framebot"]["interval"])
+
+
+def catch_exceptions(cancel_on_failure=False):
+    def catch_exceptions_decorator(job_func):
+        @functools.wraps(job_func)
+        def wrapper(*args, **kwargs):
+            try:
+                return job_func(*args, **kwargs)
+            except:
+                import traceback
+
+                print(traceback.format_exc())
+                if cancel_on_failure:
+                    return schedule.CancelJob
+
+        return wrapper
+
+    return catch_exceptions_decorator
 
 
 def main():
@@ -53,6 +72,7 @@ def main():
     return post(final_frame_dir, total_frames, episode)
 
 
+@catch_exceptions()
 def post(frame_dir, total_frames, episode):
     fb_token = config["framebot"]["fb_token"]
     prefix = config["framebot"]["prefix"]

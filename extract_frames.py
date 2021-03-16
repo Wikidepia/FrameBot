@@ -41,9 +41,9 @@ def extract_frames(video_path, frames_dir, overwrite=False, start=-1, end=-1, ev
         every > 25 and len(frames_list) < 1000
     ):  # this is faster for every > 25 frames and can fit in memory
         frames = vr.get_batch(frames_list).asnumpy()
-        for index, frame in tqdm(zip(
-            frames_list, frames
-        ), desc=f"Extracting frames from {video_filename}"):  # lets loop through the frames until the end
+        for index, frame in tqdm(
+            zip(frames_list, frames), desc=f"Extracting frames from {video_filename}"
+        ):  # lets loop through the frames until the end
             save_path = os.path.join(
                 frames_dir, video_filename, "{:010d}.jpg".format(saved_count)
             )  # create the save path
@@ -56,7 +56,9 @@ def extract_frames(video_path, frames_dir, overwrite=False, start=-1, end=-1, ev
                 saved_count += 1  # increment our counter by one
 
     else:  # this is faster for every <25 and consumes small memory
-        for index in tqdm(range(start, end), desc=f"Extracting frames from {video_filename}"):  # lets loop through the frames until the end
+        for index in tqdm(
+            range(start, end), desc=f"Extracting frames from {video_filename}"
+        ):  # lets loop through the frames until the end
             frame = vr[index]  # read an image from the capture
 
             if (
