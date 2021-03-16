@@ -77,7 +77,7 @@ def post(frame_dir, total_frames, episode):
     fb_token = config["framebot"]["fb_token"]
     prefix = config["framebot"]["prefix"]
     frame_fname = Path(frame_dir).name
-    current_frame_num = os.path.splitext(frame_fname)[0].strip("0")
+    current_frame_num = os.path.splitext(frame_fname)[0].lstrip("0")
 
     message = f"{prefix} | Episode {episode} | Frame {current_frame_num} out of {str(total_frames)}"
     graph = facebook.GraphAPI(fb_token)
