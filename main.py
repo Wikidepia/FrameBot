@@ -49,7 +49,6 @@ def main():
 
         # Empty folder means that episode is done
         if len(inframe_dir) == 0:
-            os.remove("./tmp_data")
             continue
 
         # New Episode
@@ -64,6 +63,12 @@ def main():
                 f.seek(0)
                 total_frames = str(f.readline())
         break
+
+    if len(inframe_dir) == 1:
+        os.remove("./tmp_data")
+    elif len(inframe_dir) == 0:
+        print("There is no more episode to post.")
+        raise SystemExit
 
     final_frame_dir = f"./frames/{frame_dir}/{inframe_dir[0]}"
 
