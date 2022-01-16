@@ -29,8 +29,7 @@ def extract_frames(video_path, frames_dir, overwrite=False, start=-1, end=-1, ev
     # load the VideoReader
     vr = VideoReader(video_path, ctx=cpu(0))  # can set to cpu or gpu .. ctx=gpu(0)
 
-    if start < 0:  # if start isn't specified lets assume 0
-        start = 0
+    start = max(start, 0)
     if end < 0:  # if end isn't specified assume the end of the video
         end = len(vr)
 

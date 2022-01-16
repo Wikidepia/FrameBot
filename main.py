@@ -84,7 +84,8 @@ def post(frame_dir, total_frames, episode):
     frame_fname = Path(frame_dir).name
     current_frame_num = os.path.splitext(frame_fname)[0].lstrip("0")
 
-    message = f"{prefix} | Episode {episode} | Frame {current_frame_num} out of {str(total_frames)}"
+    message = f'{prefix} | Episode {episode} | Frame {current_frame_num} out of {total_frames}'
+
     graph = facebook.GraphAPI(fb_token)
     graph.put_photo(image=open(frame_dir, "rb"), message=message)
     print(f"Posted {message} successfully!")
